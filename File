@@ -1,7 +1,7 @@
-**Type Inference** ve **Type Safety**, programlama dillerinde veri türlerinin yönetimiyle ilgili iki önemli kavramdır. İşte bu kavramların açıklamaları:
+# Type Inference ve Type Safety
 
-### Type Inference (Tür Çıkarımı)
-**Type Inference**, bir programlama dilinin değişkenlerin ve ifadelerin türünü, belirli kurallara dayanarak otomatik olarak belirlemesidir. Bu özellik, geliştiricinin her değişken veya ifade için tür belirtme zorunluluğunu ortadan kaldırarak kodu daha temiz ve okunabilir hale getirir.
+## Type Inference (Tür Çıkarımı)
+**Type Inference**, bir programlama dilinin değişkenlerin ve ifadelerin türünü, belirli kurallara dayanarak otomatik olarak belirlemesidir. Bu özellik, geliştiricinin her değişken veya ifade için tür belirtme zorunluluğunu ortadan kaldırarak kodu daha temiz ve okunabilir hale getirir. 
 
 Örneğin, Swift dilinde tür çıkarımı şu şekilde çalışır:
 
@@ -12,7 +12,7 @@ let message = "Hello, world!" // Swift, message'ın türünü String olarak beli
 
 Bu kodda, `number` ve `message` değişkenlerinin türlerini belirtmemize gerek yoktur çünkü Swift bu türleri otomatik olarak çıkarır.
 
-### Type Safety (Tür Güvenliği)
+## Type Safety (Tür Güvenliği)
 **Type Safety**, bir programlama dilinin tür uyumsuzluklarını ve hatalarını önlemek için sağladığı güvenlik mekanizmalarıdır. Tür güvenliği, değişkenlerin ve ifadelerin yalnızca belirli türdeki değerlerle çalışmasını zorunlu kılarak hataların önlenmesine yardımcı olur. Bu özellik, hataları derleme zamanında yakalayarak çalıştırma zamanında oluşabilecek hataların sayısını azaltır.
 
 Örneğin, Swift dilinde tür güvenliği şu şekilde çalışır:
@@ -24,7 +24,7 @@ age = "twenty-five" // Hata: age değişkeni Int türündedir, bu nedenle String
 
 Bu kodda, `age` değişkenine bir `String` değeri atamaya çalıştığımızda, Swift derleyicisi tür uyuşmazlığı hatası verecektir.
 
-### Özet
+## Özet
 - **Type Inference**: Programlama dilinin, türleri otomatik olarak belirlemesidir. Bu, kod yazmayı kolaylaştırır ve kodun daha temiz olmasını sağlar.
 - **Type Safety**: Programlama dilinin, tür uyumsuzluklarını önlemek için sağladığı mekanizmalardır. Bu, hataların erken yakalanmasını sağlar ve kodun güvenliğini artırır.
 
