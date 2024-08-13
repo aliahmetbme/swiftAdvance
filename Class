@@ -1,0 +1,134 @@
+# Swift'te Class'lar - Detaylı İnceleme ve Struct ile Karşılaştırma
+
+## Giriş
+Swift dilinde, `class` ve `struct` iki temel veri yapısıdır ve her ikisi de veri modellemek için kullanılır. Ancak, aralarındaki bazı temel farklılıklar, bu yapıların nasıl ve ne zaman kullanılacağını belirler. Bu belgede, Swift'teki class'ları detaylı bir şekilde inceleyecek, struct'larla karşılaştıracak ve hangi durumda hangisini kullanmanın daha mantıklı olduğunu açıklayacağız.
+
+## Swift Class Nedir?
+
+### 1. **Temel Tanım**
+- `class`, referans tipi (reference type) bir veri yapısıdır. Bu, bir class nesnesini bir değişkene atadığınızda veya bir fonksiyona geçirdiğinizde, aslında o nesnenin bir kopyasını değil, orijinal nesneye bir referansını ilettiğiniz anlamına gelir.
+- Class'lar kalıtım (inheritance) destekler, bu da bir class'ın başka bir class'tan miras alarak onun özelliklerini ve yöntemlerini kullanabilmesi anlamına gelir.
+
+### 2. **Class Yapısı**
+Aşağıda bir class tanımı örneği verilmiştir:
+
+```swift
+class Person {
+    var name: String
+    var age: Int
+
+    init(name: String, age: Int) {
+        self.name = name
+        self.age = age
+    }
+
+    func greet() {
+        print("Merhaba, benim adım \\(name) ve ben \\(age) yaşındayım.")
+    }
+}
+```
+
+**Örnek Kullanım:**
+
+```swift
+let person1 = Person(name: "Ahmet", age: 30)
+let person2 = person1  // person2, person1 ile aynı referansı gösterir.
+
+person2.name = "Mehmet"
+print(person1.name)  // Çıktı: Mehmet (Çünkü person1 ve person2 aynı nesneyi referans eder)
+```
+
+### 3. **Class'ların Özellikleri**
+- **Referans Tipi:** Aynı nesneye yapılan tüm referanslar aynı bellek alanını işaret eder.
+- **Kalıtım:** Class'lar, diğer class'lardan türetilebilir ve çoklu miras yoluyla genişletilebilir.
+- **Deinitialization:** Class'lar, bellekten kaldırılmadan önce özelleştirilmiş işlemler gerçekleştirmek için deinitializer'lar kullanabilir.
+
+### 4. **Kalıtım Örneği**
+
+```swift
+class Vehicle {
+    var currentSpeed = 0.0
+
+    func describe() -> String {
+        return "Saatte \\(currentSpeed) km hızla gidiyor."
+    }
+}
+
+class Car: Vehicle {
+    var gear = 1
+
+    override func describe() -> String {
+        return super.describe() + " Vites: \\(gear)"
+    }
+}
+
+let car = Car()
+car.currentSpeed = 80.0
+car.gear = 3
+print(car.describe())  // Çıktı: Saatte 80.0 km hızla gidiyor. Vites: 3
+```
+
+## Swift Struct Nedir?
+
+### 1. **Temel Tanım**
+- `struct`, değer tipi (value type) bir veri yapısıdır. Bu, bir struct nesnesini bir değişkene atadığınızda veya bir fonksiyona geçirdiğinizde, nesnenin bir kopyasını oluşturduğunuz anlamına gelir.
+- Struct'lar, kalıtım desteklemez ancak protokollerle uyumludur ve birçok durumda class'lara alternatif olarak kullanılabilir.
+
+### 2. **Struct Yapısı**
+Aşağıda bir struct tanımı örneği verilmiştir:
+
+```swift
+struct Point {
+    var x: Double
+    var y: Double
+
+    func distanceTo(_ point: Point) -> Double {
+        let dx = x - point.x
+        let dy = y - point.y
+        return (dx * dx + dy * dy).squareRoot()
+    }
+}
+```
+
+**Örnek Kullanım:**
+
+```swift
+var point1 = Point(x: 0, y: 0)
+var point2 = point1  // point2, point1'in bir kopyasıdır.
+
+point2.x = 10
+print(point1.x)  // Çıktı: 0 (Çünkü point2, point1'in bir kopyasıdır, referansını değil)
+```
+
+### 3. **Struct'ların Özellikleri**
+- **Değer Tipi:** Her atama veya fonksiyon çağrısında yeni bir kopya oluşturulur.
+- **Kalıtım Desteklemez:** Struct'lar başka bir struct'tan türetilemez.
+- **Performans:** Küçük ve basit veri yapıları için genellikle daha performanslıdır çünkü bellek üzerinde doğrudan çalışırlar.
+
+## Class ve Struct Arasındaki Farklar
+
+| Özellik              | Class                         | Struct                         |
+|----------------------|------------------------------|--------------------------------|
+| **Tip**              | Referans Tipi                 | Değer Tipi                     |
+| **Kalıtım**          | Evet                          | Hayır                          |
+| **Bellek Yönetimi**  | Otomatik Referans Sayımı (ARC) ile yönetilir | Yığın (stack) üzerinde yönetilir |
+| **Kopyalama**        | Kopyalanmaz, referans geçilir | Her zaman kopyalanır           |
+| **Deinitialization** | Evet, `deinit` ile mümkündür  | Hayır                          |
+
+## Ne Zaman Hangisini Kullanmalıyım?
+
+- **Class Kullanımı:**
+  - Nesneler arasında ortak davranış ve veri paylaşımı gerekiyorsa.
+  - Kalıtım ihtiyacı varsa.
+  - Nesnelerin yaşam döngüsünü yönetmek (örneğin, deinit ile) gerekiyorsa.
+  - Nesnenin birden fazla referansla paylaşılması gerektiğinde.
+
+- **Struct Kullanımı:**
+  - Basit veri modelleri için (örneğin, koordinatlar, boyutlar).
+  - Nesnelerin bağımsız olmasını ve birbirinden etkilenmemesini istiyorsanız.
+  - Hafif ve küçük veri yapıları için, performans önemliyse.
+  - Kalıtım gerekmediğinde ve sadece değer taşımak istediğinizde.
+
+## Sonuç
+
+Class'lar ve struct'lar, Swift dilinde farklı kullanım senaryoları için güçlü araçlardır. Class'lar, kalıtım ve referans tipi davranışlar gerektiren durumlar için idealken, struct'lar basit ve bağımsız veri yapıları için mükemmel bir seçenektir. Her iki yapıyı da doğru senaryolarda kullanmak, uygulamanızın performansını ve güvenilirliğini artıracaktır.

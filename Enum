@@ -1,0 +1,155 @@
+# Swift Enum'ları
+
+## Enum Tanımlama
+
+Swift'te `enum` (enumeration), belirli bir grup ile ilişkili değerleri bir araya getirir. `enum` anahtar kelimesi kullanılarak tanımlanır.
+
+```swift
+enum Yon {
+    case kuzey
+    case guney
+    case dogu
+    case bati
+}
+```
+
+Yukarıdaki örnekte, `Yon` adında bir enum tanımlanmıştır ve dört farklı yönü temsil eder: `kuzey`, `guney`, `dogu`, ve `bati`.
+
+## Enum Kullanımı
+
+Enum'lar, belirli bir durumu temsil etmek için kullanılır. Belirli bir enum değerine erişmek için `.` (nokta) notasyonu kullanılır.
+
+### Örnek:
+
+```swift
+var aktifYon = Yon.kuzey
+
+aktifYon = .bati
+```
+
+Burada `aktifYon`, önce `Yon.kuzey` değerine atanır, sonra `Yon.bati` değerine güncellenir.
+
+## Switch ile Enum Kullanımı
+
+Enum'lar genellikle `switch` ifadeleriyle birlikte kullanılır. Bu sayede her bir durum için belirli işlemler yapılabilir.
+
+### Örnek:
+
+```swift
+switch aktifYon {
+case .kuzey:
+    print("Kuzeye gidiliyor.")
+case .guney:
+    print("Güneye gidiliyor.")
+case .dogu:
+    print("Doğuya gidiliyor.")
+case .bati:
+    print("Batıya gidiliyor.")
+}
+```
+
+Bu örnekte, `aktifYon`'un hangi yöne işaret ettiğine göre farklı bir mesaj yazdırılır.
+
+## Enum'lara İlişkili Değerler (Associated Values) Eklemek
+
+Enum'lar, ilişkili değerler alabilirler. Bu sayede her enum durumu ile birlikte bir ya da daha fazla değer saklanabilir.
+
+### Örnek:
+
+```swift
+enum Hata {
+    case sunucuHatasi(kod: Int)
+    case kullaniciHatasi(mesaj: String)
+}
+```
+
+Burada `Hata` enum'ı iki durum içerir: `sunucuHatasi` ve `kullaniciHatasi`. `sunucuHatasi` bir `Int` değeri alırken, `kullaniciHatasi` bir `String` değeri alır.
+
+### Kullanım:
+
+```swift
+let hata = Hata.sunucuHatasi(kod: 404)
+
+switch hata {
+case .sunucuHatasi(let kod):
+    print("Sunucu Hatası: \(kod)")
+case .kullaniciHatasi(let mesaj):
+    print("Kullanıcı Hatası: \(mesaj)")
+}
+```
+
+Bu örnekte, `sunucuHatasi` ile ilişkili olan kod değeri `404` olarak belirlenmiş ve `switch` ifadesi ile bu değer kullanılmıştır.
+
+## Enum'lara Varsayılan Değer (Raw Values) Eklemek
+
+Enum'lar sabit tiplerdeki değerlerle de tanımlanabilir. Bu değerlere "raw value" denir ve her durum için belirli bir sabit değer atanır.
+
+### Örnek:
+
+```swift
+enum Gunler: Int {
+    case pazartesi = 1
+    case sali
+    case carsamba
+    case persembe
+    case cuma
+    case cumartesi
+    case pazar
+}
+```
+
+Bu örnekte, `Gunler` enum'ı `Int` tipinde raw value'lar içerir. İlk duruma `1` atanmış, diğer durumlar otomatik olarak birer artırılarak atanmıştır.
+
+### Kullanım:
+
+```swift
+let gun = Gunler.cuma
+print(gun.rawValue) // 5
+```
+
+Raw value'lar ile enum durumlarını sabit değerlere bağlayabilirsiniz. Bu örnekte, `Gunler.cuma`'nın raw value'su `5`'tir.
+
+## Enum'ları İnitilize Etmek
+
+Raw value kullanan bir enum, raw value üzerinden init edilerek de oluşturulabilir.
+
+### Örnek:
+
+```swift
+let gun = Gunler(rawValue: 3)
+print(gun) // Optional(Gunler.carsamba)
+```
+
+Bu örnekte, `rawValue` 3 olan `Gunler` enum'ı başarılı bir şekilde `Gunler.carsamba` olarak inisiyalize edilmiştir.
+
+## Enum'lara Fonksiyon Eklemek
+
+Swift'te enum'lara fonksiyon eklenebilir. Bu sayede, enum'lar kendi özellikleriyle ilişkili işlemleri gerçekleştirebilir.
+
+### Örnek:
+
+```swift
+enum Isik {
+    case kirmizi, sari, yesil
+    
+    func isikSuresi() -> Int {
+        switch self {
+        case .kirmizi:
+            return 30
+        case .sari:
+            return 5
+        case .yesil:
+            return 25
+        }
+    }
+}
+```
+
+### Kullanım:
+
+```swift
+let suankiIsik = Isik.kirmizi
+print("Kırmızı ışık süresi: \(suankiIsik.isikSuresi()) saniye") // 30 saniye
+```
+
+Bu örnekte, `Isik` enum'ı her bir ışık durumuna göre bir süre döndüren bir fonksiyon içerir.

@@ -1,0 +1,185 @@
+# Swift Fonksiyonları
+
+## Fonksiyon Tanımlama
+
+Swift dilinde bir fonksiyon tanımlamak için `func` anahtar kelimesi kullanılır. Temel bir fonksiyon tanımı şu şekildedir:
+
+```swift
+func fonksiyonAdi() {
+    // Fonksiyonun gövdesi
+}
+```
+
+### Örnek:
+
+```swift
+func selamVer() {
+    print("Merhaba, dünya!")
+}
+```
+
+Bu örnekte, `selamVer` adlı bir fonksiyon tanımlanmış ve bu fonksiyon çağrıldığında "Merhaba, dünya!" yazısını konsola yazdırır.
+
+## Parametreler
+
+Swift fonksiyonlarına parametre ekleyerek daha dinamik bir yapı oluşturabilirsiniz. Parametreler fonksiyonun adıyla birlikte tanımlanır.
+
+### Örnek:
+
+```swift
+func toplama(a: Int, b: Int) -> Int {
+    return a + b
+}
+```
+
+Bu fonksiyon, iki `Int` tipi parametre alır ve bunların toplamını geri döner.
+
+### Parametrelerle Birlikte Kullanım:
+
+```swift
+let sonuc = toplama(a: 5, b: 3)
+print(sonuc) // 8
+```
+
+## Geri Dönüş Değerleri
+
+Swift fonksiyonları, bir değer döndürebilirler. Döndürülecek değerin tipi, fonksiyonun dönüş tipinde belirtilir. Bu türler, parametre listesinden sonra `->` işaretiyle gösterilir.
+
+### Örnek:
+
+```swift
+func kareAl(sayi: Int) -> Int {
+    return sayi * sayi
+}
+```
+
+Bu fonksiyon, verilen bir sayının karesini alır ve geri döner.
+
+## Çoklu Geri Dönüş Değerleri (Tuples)
+
+Bir Swift fonksiyonu, birden fazla değeri tek bir dönüş olarak dönebilir. Bu, tuple (demet) kullanılarak yapılır.
+
+### Örnek:
+
+```swift
+func minVeMax(sayilar: [Int]) -> (min: Int, max: Int)? {
+    guard let ilkSayi = sayilar.first else { return nil }
+    var min = ilkSayi
+    var max = ilkSayi
+    
+    for sayi in sayilar {
+        if sayi < min {
+            min = sayi
+        } else if sayi > max {
+            max = sayi
+        }
+    }
+    
+    return (min, max)
+}
+```
+
+Bu fonksiyon, bir `Int` dizisi alır ve dizideki en küçük ve en büyük değerleri bir tuple olarak döner.
+
+## Parametre Adlandırma
+
+Swift fonksiyonları, parametreleri için hem harici hem de dahili adlar kullanabilirler. Harici adlar, fonksiyon çağrılırken kullanılırken; dahili adlar fonksiyonun gövdesinde kullanılır.
+
+### Örnek:
+
+```swift
+func selamla(kime ad: String) {
+    print("Merhaba, \(ad)!")
+}
+```
+
+Bu fonksiyonda, `kime` harici bir ad, `ad` ise dahili bir addır.
+
+### Kullanım:
+
+```swift
+selamla(kime: "Ali") // "Merhaba, Ali!"
+```
+
+## Varsayılan Parametreler
+
+Fonksiyon parametrelerine varsayılan değerler atanabilir. Bu sayede fonksiyon, bazı parametreler verilmediğinde bile çalışabilir.
+
+### Örnek:
+
+```swift
+func mesajYaz(mesaj: String = "Merhaba") {
+    print(mesaj)
+}
+```
+
+Bu fonksiyon, `mesaj` parametresi verilmezse "Merhaba" yazacaktır.
+
+### Kullanım:
+
+```swift
+mesajYaz()          // "Merhaba"
+mesajYaz(mesaj: "Nasılsın?") // "Nasılsın?"
+```
+
+## İnOut Parametreler
+
+Fonksiyonlar, parametre olarak `inout` anahtar kelimesi ile değiştirilebilir (mutating) parametreler alabilirler. Bu sayede fonksiyon, dışarıdan aldığı parametreyi fonksiyon içinde değiştirebilir.
+
+### Örnek:
+
+```swift
+func ikiIleCarp(sayi: inout Int) {
+    sayi *= 2
+}
+```
+
+### Kullanım:
+
+```swift
+var deger = 10
+ikiIleCarp(sayi: &deger)
+print(deger) // 20
+```
+
+`inout` kullanarak parametreye atanan değeri fonksiyon dışında da değiştirmiş olursunuz.
+
+## Fonksiyon İçinde Fonksiyonlar
+
+Swift dilinde bir fonksiyonun içinde başka bir fonksiyon tanımlanabilir. Bu, özellikle karmaşık fonksiyonlarda, kodun organizasyonunu iyileştirmek için kullanışlıdır.
+
+### Örnek:
+
+```swift
+func disFonksiyon() {
+    func icFonksiyon() {
+        print("Bu bir iç fonksiyon.")
+    }
+    
+    icFonksiyon()
+}
+```
+
+### Kullanım:
+
+```swift
+disFonksiyon() // "Bu bir iç fonksiyon."
+```
+
+## Geri Çağırma Fonksiyonları (Closures)
+
+Swift'te fonksiyonlar bir değişkene atanabilir, parametre olarak geçilebilir ve geri dönebilir. Bu tür fonksiyonlara closure denir.
+
+### Örnek:
+
+```swift
+let selamClosure = {
+    print("Merhaba!")
+}
+
+selamClosure() // "Merhaba!"
+```
+
+Closure'lar özellikle asenkron işlemlerde geri çağırma (callback) olarak kullanılır.
+
+

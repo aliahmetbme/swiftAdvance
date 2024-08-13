@@ -1,0 +1,232 @@
+# Swift Protokolleri (Protocols)
+
+## Protokol Nedir?
+
+Swift'te `protocol`, bir sınıfın, yapının (struct), ya da enum'un sahip olması gereken özellikleri ve metotları tanımlayan bir şablondur. Protokoller, belirli bir amaca yönelik işlevselliği standartlaştırmak için kullanılır.
+
+### Temel Protokol Tanımı
+
+```swift
+protocol SomeProtocol {
+    // Protokol tanımı buraya gelir
+}
+```
+
+### Örnek:
+
+```swift
+protocol Tanitilabilir {
+    var isim: String { get }
+    func tanit()
+}
+```
+
+Bu örnekte, `Tanitilabilir` adında bir protokol tanımlanmış ve bu protokolü benimseyen her türün bir `isim` özelliğine ve bir `tanit()` metoduna sahip olması gerektiği belirtilmiştir.
+
+## Protokolleri Benimsemek
+
+Bir tür, belirli bir protokolü benimsemek (adopt) için protokolün gerektirdiği tüm özellikleri ve metotları tanımlamalıdır. `class`, `struct`, veya `enum`'lar protokolleri benimseyebilir.
+
+### Örnek:
+
+```swift
+struct Kisi: Tanitilabilir {
+    var isim: String
+    
+    func tanit() {
+        print("Merhaba, benim adım \(isim).")
+    }
+}
+```
+
+Bu örnekte, `Kisi` yapısı `Tanitilabilir` protokolünü benimsemiştir. Bu nedenle, `isim` özelliğini ve `tanit()` metodunu içermesi zorunludur.
+
+### Kullanım:
+
+```swift
+let kisi = Kisi(isim: "Ahmet")
+kisi.tanit() // "Merhaba, benim adım Ahmet."
+```
+
+## Protokol'ler İçin Özellikler (Properties)
+
+Protokoller hem değiştirilebilir (mutable) hem de yalnızca okunabilir (read-only) özellikler tanımlayabilir. Bu özellikler `var` ile tanımlanır ve `{ get set }` veya `{ get }` gibi kısıtlamalarla sınırlanabilir.
+
+### Örnek:
+
+```swift
+protocol Arabirim {
+    var marka: String { get }
+    var hiz: Int { get set }
+}
+```
+
+Bu protokolü benimseyen türler, `marka` özelliğini yalnızca okuyabilir ve `hiz` özelliğini hem okuyup hem de yazabilir.
+
+## Metotlar
+
+Protokoller, kendilerini benimseyen türlerin implement etmesi gereken metotları tanımlar. Bu metotlar, tip olarak sabit türler veya generics olabilir.
+
+### Örnek:
+
+```swift
+protocol Makineler {
+    func calistir()
+    func durdur()
+}
+```
+
+`Makineler` protokolünü benimseyen türler, `calistir()` ve `durdur()` metotlarını implement etmelidir.
+
+## Mutating Metotlar
+
+Eğer bir protokol metodu, onu benimseyen `struct` veya `enum` türlerinde bir değişiklik yapacaksa, `mutating` anahtar kelimesi kullanılır.
+
+### Örnek:
+
+```swift
+protocol Konumlanabilir {
+    mutating func hareketEt(x: Int, y: Int)
+}
+```
+
+Bu örnekte, `hareketEt(x:y:)` metodu `struct` veya `enum` türlerinde bir değişiklik yapacaksa `mutating` olarak işaretlenir.
+
+## Initializers (Başlatıcılar)
+
+Protokoller, belirli türlerde implement edilmesi gereken başlatıcıları (initializer) tanımlayabilir.
+
+### Örnek:
+
+```swift
+protocol Baslatilabilir {
+    init(tur: String)
+}
+```
+
+Bu protokolü benimseyen türler, `init(tur:)` başlatıcısını implement etmelidir.
+
+### Örnek Kullanım:
+
+```swift
+class Cihaz: Baslatilabilir {
+    var tur: String
+    
+    required init(tur: String) {
+        self.tur = tur
+    }
+}
+```
+
+Bu örnekte, `Cihaz` sınıfı `Baslatilabilir` protokolünü benimsemiştir ve bu nedenle `init(tur:)` başlatıcısını implement etmesi gerekmektedir. Ayrıca, `required` anahtar kelimesi kullanılarak, bu başlatıcının alt sınıflarda da zorunlu olduğu belirtilir.
+
+## Protokol'ler ve Sınıf Türü Kısıtlaması
+
+Swift'te bir protokol sadece sınıflar tarafından benimsenebilecek şekilde kısıtlanabilir. Bu, protokolün `class` olarak işaretlenmesiyle yapılır.
+
+### Örnek:
+
+```swift
+protocol NesneYonetimi: AnyObject {
+    func kaydet()
+    func sil()
+}
+```
+
+`NesneYonetimi` protokolü sadece sınıflar tarafından benimsenebilir, `struct` veya `enum` türleri bu protokolü benimseyemez.
+
+## Protokol Kalıtımı (Protocol Inheritance)
+
+Protokoller, diğer protokollerden türetilebilir (inherit). Bir protokol başka bir protokolü miras aldığında, o protokolün gereksinimlerine ek olarak kendi gereksinimlerini de tanımlar.
+
+### Örnek:
+
+```swift
+protocol HareketEdebilir {
+    func ileriGit()
+}
+
+protocol Donabilir: HareketEdebilir {
+    func sagaDon()
+    func solaDon()
+}
+```
+
+Bu örnekte, `Donabilir` protokolü `HareketEdebilir` protokolünü miras alır, bu nedenle `Donabilir` protokolünü benimseyen türler hem `ileriGit()` hem de `sagaDon()` ve `solaDon()` metotlarını implement etmelidir.
+
+## Protokol Bileşimi (Protocol Composition)
+
+Swift'te bir tür birden fazla protokolü aynı anda benimseyebilir. Bu durum `&` operatörü ile gösterilir.
+
+### Örnek:
+
+```swift
+protocol Konusabilir {
+    func konus()
+}
+
+protocol Kosabilir {
+    func kos()
+}
+
+struct Insan: Konusabilir, Kosabilir {
+    func konus() {
+        print("Konusuyorum.")
+    }
+    
+    func kos() {
+        print("Kosuyorum.")
+    }
+}
+
+func hareketEt(karakter: Konusabilir & Kosabilir) {
+    karakter.konus()
+    karakter.kos()
+}
+```
+
+Bu örnekte, `Insan` hem `Konusabilir` hem de `Kosabilir` protokollerini benimsemiştir. `hareketEt` fonksiyonu ise, bu iki protokolü de benimseyen türlerle çalışabilir.
+
+## Protokoller ve Varsayılan Uygulamalar (Default Implementations)
+
+Swift protokolleri, varsayılan uygulamalar (default implementations) sağlayabilir. Bu, protokol genişletmeleri (extensions) aracılığıyla yapılır ve tüm türler tarafından otomatik olarak kullanılabilir.
+
+### Örnek:
+
+```swift
+protocol YemekPisirebilir {
+    func yemekPisirmeSuresi() -> Int
+}
+
+extension YemekPisirebilir {
+    func yemekPisirmeSuresi() -> Int {
+        return 30
+    }
+}
+```
+
+Bu örnekte, `YemekPisirebilir` protokolüne bir varsayılan uygulama sağlanmıştır. Bu uygulama, protokolü benimseyen herhangi bir tür tarafından kullanılabilir veya özelleştirilebilir.
+
+## Protokoller ve Generics
+
+Protokoller, generics ile birlikte kullanılabilir. Bu, esnek ve yeniden kullanılabilir kod yazmanıza olanak tanır.
+
+### Örnek:
+
+```swift
+protocol Saklanabilir {
+    associatedtype Item
+    var ogeler: [Item] { get set }
+    mutating func ekle(oge: Item)
+}
+
+struct Koleksiyon<Item>: Saklanabilir {
+    var ogeler = [Item]()
+    
+    mutating func ekle(oge: Item) {
+        ogeler.append(oge)
+    }
+}
+```
+
+Bu örnekte, `Saklanabilir` protokolü bir `associatedtype` ile generics kullanır. `Koleksiyon` yapısı bu protokolü benimser ve belirli bir türde öğeleri saklar.
